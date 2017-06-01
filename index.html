@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>lala system</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+	<script src="js/angular.min.js" ></script>
+	<script src="js/Canvas.js" ></script>
+	
+	
+	<style>
+	@font-face {
+		font-family:'王漢宗特明體繁';
+		src: url("王漢宗特明體繁.ttf");
+	}
+	</style>
+	<script src="js/MergeImage/MergeImage.js" ></script>
+	<script src="js/MergeImage/listen.js" ></script>
+	<script src="js/MergeImage/start.js" ></script>
+	<script src="js/MergeImage/move.js" ></script>
+	<script src="js/MergeImage/setData.js" ></script>
+	<script src="js/MergeImage/draw.js" ></script>
+	<script src="js/MergeText/MergeText.js" ></script>
+	<script src="js/MergeText/oneTextToImg.js" ></script>
+	<script src="js/MergeText/closeScale.js" ></script>
+	<script src="js/MergeText/resize_text_imgs.js" ></script>
+	<script src="js/MergeText/type0.js" ></script>
+	<script src="js/MergeText/type1.js" ></script>
+	<script src="js/MergeText/type2.js" ></script>
+	<script src="js/MergeText/merge_continuous_text.js" ></script>
+	
+	<script src="angularjs-color-picker/tinycolor-min.js" ></script>
+	<script src="angularjs-color-picker/angularjs-color-picker.min.js" ></script>
+	
+	<link rel="stylesheet" type="text/css" href="angularjs-color-picker/angularjs-color-picker.min.css" />
+
+	<script src="/app/app.js" ></script>	
+	<script src="/app/components/index/index.js" ></script>	
+	<script src="/app/components/file/file.js" ></script>	
+	<link rel="stylesheet" type="text/css" href="bootstrap-3.3.7/css/bootstrap.min.css" />
+
+	
+
+	<style>
+	.noPadding{
+		padding:0!important;
+	}
+	.inlineBlock{
+		display:inline-block!important;
+		vertical-align: middle;
+	}
+	.btn-dark{
+		color:#ffffff;
+		background:#000000;
+	}
+	.btn-dark:hover, .btn-dark:focus{
+		color:#bbbbbb;
+		background:#222222;
+	}
+	select.form-control{
+		width:auto;
+	}
+	</style>
+</head>
+<body 
+ng-app="app"
+style="overflow-y: scroll;background:#000000;"
+class="container noPadding"
+>
+	<index></index>	
+</body>
+</html>

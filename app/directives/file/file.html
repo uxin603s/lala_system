@@ -1,0 +1,17 @@
+<div style="position:relative;">
+	{{text}}
+	<div ng-show="type==1">
+		<a
+		style="opacity:0;width:100%;height:100%;position:absolute;left:0;top:0;"
+		tagget="_blank"
+		ng-href="{{href}}" 
+		download="{{name}}.json"
+		></a>
+	</div>
+	<div ng-show="type==2">
+		<input 
+		type="file" 
+		style="opacity:0;width:100%;height:100%;position:absolute;left:0;top:0;"
+		/>
+	</div>
+</div>

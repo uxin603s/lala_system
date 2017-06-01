@@ -1,0 +1,285 @@
+<div class="col-md-12 col-xs-12 noPadding" >
+	<div class="col-md-12 col-xs-12 noPadding" style="background:#ffffff;" id="canvas_block"></div>	
+</div>
+<div class="col-md-12 col-xs-12 noPadding" style="background:#999999;">
+	<div>
+		<span ng-repeat="field in ['w','h']">
+		{{field}}
+		<input 
+		class="form-control noPadding inlineBlock"
+		style="width:50px;height:auto;"
+		type="number" 
+		string-to-number
+		ng-model="control[field]"
+		ng-change="draw()"
+		/>		
+		</span>
+		
+		<input 
+		type="checkbox" ng-checded="control.option.boder" ng-model="control.option.boder"
+		/>
+		邊界限制
+	</div>
+	<div style="overflow-x: scroll;white-space: nowrap;">
+		<div ng-repeat="item in data"  style="display:inline-block;">
+			<button 
+			ng-click="draw();control.select.i==$index?control.select.i=undefuned:control.select.i=$index"
+			ng-class="control.select.i==$index?'btn-dark':'btn-default'"
+			class="btn btn-sm "
+			>
+				<span ng-if="item.source.type=='font'">
+				{{item.source.src.text.length<=3?item.source.src.text:item.source.src.text.substr(0,3)+'...'}}
+				</span>
+				<img
+				ng-if="item.source.type=='image'"
+				style="height:20px;"
+				ng-src="{{item.source.src}}"
+				/>
+			</button>
+		</div>
+	</div>
+	<div ng-if="data[control.select.i]">
+
+		<div>
+			<button 
+			class="btn btn-sm btn-dark"
+			ng-click="del()"
+			>刪除</button>
+
+			<button 
+			class="btn btn-sm btn-dark"
+			ng-click="copy()"
+			>複製</button>
+			{{control.select.i+1}}
+			<button 
+			class="btn btn-sm btn-dark"
+			ng-click="data[control.select.i-1] && swap(control.select.i,control.select.i-1)"
+			>↑</button>
+			<button 
+			class="btn btn-sm btn-dark"
+			ng-click="data[control.select.i+1] && swap(control.select.i,control.select.i+1)"
+			>↓</button>
+			<span ng-repeat="field in ['x','y','w','h',]">
+				{{field}}:
+				<input 
+				class="form-control noPadding inlineBlock"
+				style="width:50px;height:auto;"
+				type="number" 
+				string-to-number
+				ng-model="data[control.select.i][field]"
+				ng-change="draw()"
+				/>				
+			</span>
+			<div class="inlineBlock">
+				旋轉:
+				<input 
+				class="form-control noPadding inlineBlock"
+				style="width:50px;height:auto;"
+				type="number" 
+				string-to-number
+				ng-model="data[control.select.i].rotate"
+				ng-change="draw()"
+				/>	
+			</div>	
+			<div class="inlineBlock">
+				留白:
+				<input 
+				class="form-control noPadding inlineBlock"
+				style="width:50px;height:auto;"
+				type="number" 
+				string-to-number
+				ng-model="data[control.select.i].bg.padding"
+				ng-change="draw()"
+				/>	
+			</div>	
+			<div class="inlineBlock">
+				圓角:{{data[control.select.i].bg.radius}}
+				<input 
+				class="form-control noPadding inlineBlock"
+				style="width:50px;height:auto;"
+				type="range" 
+				min="0"
+				max="10"
+				string-to-number
+				ng-model="data[control.select.i].bg.radius"
+				ng-change="draw()"
+				/>	
+			</div>	
+			<div class="inlineBlock">
+				背景色:
+				<input 
+				class="form-control noPadding inlineBlock"
+				style="width:20px;height:20px;"
+				type="color" 
+				string-to-number
+				ng-model="data[control.select.i].bg.color"
+				ng-change="draw()"
+				/>
+			</div>			
+		</div>	
+		<div>						
+			<button
+			ng-click="data[control.select.i].lock.whxy=!data[control.select.i].lock.whxy"
+			ng-class="data[control.select.i].lock.whxy?'btn-dark':'btn-default'"
+			class="btn btn-sm"
+			>不可選</button>
+			<button
+			ng-click="draw();data[control.select.i].lock.hide=!data[control.select.i].lock.hide"
+			ng-class="data[control.select.i].lock.hide?'btn-dark':'btn-default'"
+			class="btn btn-sm"
+
+			>隱藏</button>
+			<button
+			ng-click="data[control.select.i].lock.scale=!data[control.select.i].lock.scale"
+			ng-class="data[control.select.i].lock.scale?'btn-dark':'btn-default'"
+			class="btn btn-sm"
+			>鎖比例</button>
+			
+			
+		</div>	
+		<div>	
+			<div 
+			class="inlineBlock"
+			>
+				類型:
+				<button 
+				ng-click="change_type(data[control.select.i],item.name)"
+				ng-repeat="item in [{name:null,view:'無'},{name:'font',view:'文字'},{name:'image',view:'圖片'}]"
+				ng-class="data[control.select.i].source.type==item.name?'btn-dark':'btn-default'"
+				class="btn btn-sm"
+				>{{item.view}}
+				</button>
+
+				
+			</div>
+			<div 
+			class="inlineBlock"
+			ng-if="data[control.select.i].source.type=='font'">
+				<div class="inlineBlock">	
+					大小:
+					<input 
+					class="form-control noPadding inlineBlock"
+					style="width:50px;height:auto;"
+					type="number" 
+					string-to-number
+					ng-model="data[control.select.i].source.src.size"
+					ng-change="control.drawFont(data[control.select.i])"
+					/>
+				</div>
+				<div class="inlineBlock">	
+					顏色:
+					<input 
+					class="form-control noPadding inlineBlock"
+					style="width:20px;height:20px;"
+					type="color" 
+					string-to-number
+					ng-model="data[control.select.i].source.src.color"
+					ng-change="control.drawFont(data[control.select.i])"
+					/>	
+				</div>
+				<div class="inlineBlock">	
+					類型:
+					<select 
+					class="form-control noPadding inlineBlock"
+					ng-options="item.value as item.name for item in [{name:'多行',value:0},{name:'水平一行',value:1},{name:'垂直一行',value:2},]"
+					ng-model="data[control.select.i].source.src.type"
+					ng-change="control.drawFont(data[control.select.i])"
+					></select>	
+				</div>
+				<div class="inlineBlock">	
+					垂直:
+					<select 
+					class="form-control noPadding inlineBlock"
+					ng-options="item.value as item.name for item in [{name:'上',value:0},{name:'中',value:1},{name:'下',value:2},]"
+					ng-model="data[control.select.i].source.src.align.v"
+					ng-change="control.drawFont(data[control.select.i])"
+					></select>	
+				</div>	
+				<div class="inlineBlock">	
+					水平:
+					<select 
+					class="form-control noPadding inlineBlock"
+					ng-options="item.value as item.name for item in [{name:'左',value:0},{name:'中',value:1},{name:'右',value:2},]"
+					ng-model="data[control.select.i].source.src.align.h"
+					ng-change="control.drawFont(data[control.select.i])"
+					></select>	
+				</div>
+				<div class="inlineBlock">
+					描邊大小:
+					<input 
+					class="form-control noPadding inlineBlock"
+					style="width:50px;height:auto;vertical-align: middle;"
+					type="range" 
+					min="0"
+					max="10"
+					string-to-number
+					ng-model="data[control.select.i].source.src.bg.size"
+					ng-change="control.drawFont(data[control.select.i])"
+					/>	
+					{{data[control.select.i].source.src.bg.size}}
+				</div>
+				<div style="display:inline-block;">
+					描邊顏色:
+					<input 
+					class="form-control noPadding inlineBlock"
+					style="width:20px;height:20px;"
+					type="color" 
+					string-to-number
+					ng-model="data[control.select.i].source.src.bg.color"
+					ng-change="control.drawFont(data[control.select.i])"
+					/>	
+				</div>
+				<div style="display:inline-block;">
+					內容		
+					<textarea 
+
+					class="form-control noPadding inlineBlock"
+					style="width:100px;height:auto;vertical-align: middle;vertical-align: middle;"
+					ng-change="control.drawFont(data[control.select.i])"
+					ng-model="data[control.select.i].source.src.text"
+					></textarea>
+				</div>
+				<div style="display:inline-block;">
+					字型		
+					<textarea 
+					class="form-control noPadding inlineBlock"
+					style="width:100px;height:auto;vertical-align: middle;vertical-align: middle;"
+					ng-change="control.drawFont(data[control.select.i])"
+					ng-model="data[control.select.i].source.src.family"
+					></textarea>
+				</div>
+			</div>
+			<div 
+			style="display:inline-block;"
+			ng-if="data[control.select.i].source.type=='image'">
+				<div style="display:inline-block;">
+					圖片網址		
+					<textarea 
+					ng-if="0"
+					class="form-control noPadding inlineBlock"
+					style="vertical-align: middle;"
+					ng-change="data[control.select.i].source.canvas=undefined;draw()"
+					ng-model="data[control.select.i].source.src"
+					></textarea>
+				</div>
+				<button class="btn btn-sm btn-dark" style="position:relative;">
+					上傳<file					
+					format="'image'"
+					callback="read"					
+					></file>
+				</button>
+				<img 
+				ng-if="data[control.select.i].source.src"
+				style="width:50px;" ng-src="{{data[control.select.i].source.src}}" />
+				<button 
+				ng-click="back.wh()"
+				class="btn btn-sm btn-dark"
+				>還原大小</button>
+				<button 
+				ng-click="back.scale()"
+				class="btn btn-sm btn-dark"
+				>還原比例</button>
+			</div>
+		</div>	
+	</div>	
+</div>	
