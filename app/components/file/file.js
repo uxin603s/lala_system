@@ -2,37 +2,42 @@ angular.module('app').component("file",{
 bindings:{
 	format:'=',
 	callback:'=',
+	arg:"=",
 },
 templateUrl:'/app/components/file/file.html',
 controller:["$scope","$http","$timeout","$element",function($scope,$http,$timeout,$element){
-	$element[0].querySelector('[type=file]').addEventListener('change',function(e){
-		var files=e.target.files;
-		for(var i in files){
-			var file=files[i];
-			if(file instanceof File){
-				console.log($scope.$ctrl.format)
-				var reader = new FileReader();					
-				reader.onload=function(e){
-					// console.log(e)
-					var data=e.target.result;
-					if($scope.$ctrl.format=="json"){
-						if(data){
-							data=JSON.parse(data);
+	$scope.$ctrl.$onInit=function(){
+		$element[0].querySelector('[type=file]').addEventListener('change',function(e){
+			var files=e.target.files;
+			for(var i in files){
+				var file=files[i];
+				if(file instanceof File){
+					var reader = new FileReader();					
+					reader.onload=function(e){
+						// console.log(e)
+						var data=e.target.result;
+						if($scope.$ctrl.format=="json"){
+							if(data){
+								data=JSON.parse(data);
+							}
 						}
+						$scope.$ctrl.callback && $scope.$ctrl.callback(data,$scope.$ctrl.arg);
+						$scope.$apply();
 					}
-					$scope.$ctrl.callback && $scope.$ctrl.callback(data);
-					$scope.$apply();
+					
+					if($scope.$ctrl.format=="json"){
+						reader.readAsText(file);	
+					}else if($scope.$ctrl.format=="image"){
+						reader.readAsDataURL(file);	
+					}else if($scope.$ctrl.format=="file"){
+						$scope.$ctrl.callback(file);
+					}		
 				}
-				
-				if($scope.$ctrl.format=="json"){
-					reader.readAsText(file);	
-				}else if($scope.$ctrl.format=="image"){
-					reader.readAsDataURL(file);	
-				}			
 			}
-		}
-		this.value=''
-	})
+			this.value=''
+		})
+	}
+	
 
 }],
 })

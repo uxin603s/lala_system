@@ -1,6 +1,6 @@
 MergeImage.prototype.draw=function(callback){
-	// clearTimeout(this.draw_timer)
-	// this.draw_timer=setTimeout(function(){
+	clearTimeout(this.draw_timer)
+	this.draw_timer=setTimeout(function(){
 		this.resize();
 		this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height)
 		let len=(this.whxys.length)-1;
@@ -13,21 +13,36 @@ MergeImage.prototype.draw=function(callback){
 					continue;
 				}
 			}		
-			let source_canvas=whxy.source.canvas;
+
+			let source_canvas=this.level_canvas[i];
 			if(source_canvas){	
-				this.drawInner(whxy,source_canvas)			
+				this.drawInner(whxy,source_canvas)		
 			}else{
 				if(whxy.source.type=="font"){
-					this.drawFont(whxy);
+					if(!whxy.source.load){
+						whxy.source.load=true;
+						whxy.source.src.w=whxy.w;
+						whxy.source.src.h=whxy.h;
+						this.mergeTextFunc.merge(whxy.source.src,function(i,res){
+							this.level_canvas[i]=res;
+							this.draw();
+							delete whxy.source.load;
+						}.bind(this,i))
+					}
 				}
-				else if(whxy.source.type=="image" ){
-					var img=new Image;
-					img.onload=function(i,img,whxy){
-						whxy.source.canvas=img;					
-						this.draw();
-						this.callback && this.callback(this.whxys)				
-					}.bind(this,i,img,whxy)
-					img.src=whxy.source.src
+				else if(whxy.source.type=="image"){
+					if(!whxy.source.load){
+						whxy.source.load=true;
+						var img=new Image;
+						img.onload=function(i,img,whxy){
+							this.level_canvas[i]=img;					
+							this.draw();
+							this.callback && this.callback(this.whxys)				
+							delete whxy.source.load;
+						}.bind(this,i,img,whxy)
+						if(whxy.source.src)
+						img.src=whxy.source.src
+					}
 				}
 			}
 			if(this.select && this.select.i==i){
@@ -55,14 +70,7 @@ MergeImage.prototype.draw=function(callback){
 			}
 		}
 		callback && callback();
-	// }.bind(this),5)	
-}
-
-MergeImage.prototype.cloneCanvas=function (oldCanvas) {
-    var c =new Canvas(oldCanvas.width,oldCanvas.height);
-    var ctx = newCanvas.getContext('2d');
-    ctx.drawImage(oldCanvas, 0, 0);
-    return c;
+	}.bind(this),5)	
 }
 MergeImage.prototype.drawInner=function(whxy,source_canvas){
 

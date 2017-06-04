@@ -19,20 +19,9 @@ function MergeImage(w,h){
 	};
 	this.key_control();
 	this.mergeTextFunc=new MergeText;
+	this.level_canvas={};
 }
 
-MergeImage.prototype.drawFont=function(whxy){
-	clearTimeout(this.timer1)
-	this.timer1=setTimeout(function(whxy){
-		whxy.source.src.w=whxy.w;
-		whxy.source.src.h=whxy.h;
-		this.mergeTextFunc.merge(whxy.source.src,function(source_canvas){
-			whxy.source.canvas=source_canvas;
-			this.draw();
-			this.callback && this.callback(this.whxys);
-		}.bind(this))
-	}.bind(this,whxy),50);
-}
 MergeImage.prototype.setOption=function(key,value){		
 	this.option[key]=value;
 	return this;
@@ -124,26 +113,4 @@ MergeImage.prototype.key_control=function(){
 			this.draw()
 		}
 	}.bind(this))
-}
-MergeImage.prototype.swap=function(index,swap_index){
-
-	var tmp=this.whxys[index];
-	this.whxys[index]=this.whxys[swap_index];
-	this.whxys[swap_index]=tmp;
-	
-	
-	if(this.select){
-		if(this.select.i==swap_index){
-			this.select.i=index
-		}else if(this.select.i==index){
-			this.select.i=swap_index
-		}
-		let whxy=this.whxys[this.select.i];
-		this.select.x=whxy.x;
-		this.select.y=whxy.y;
-		this.select.w=whxy.w;
-		this.select.h=whxy.h;
-	}
-	this.draw();
-	
 }

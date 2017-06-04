@@ -1,0 +1,43 @@
+<style>
+.image_level_item{
+	border: 5px #555555 solid;
+}
+.image_level_item.active{
+	border: 5px #111111 solid;
+	background:#111111;
+}
+</style>
+<div class="col-md-12 col-xs-12 noPadding" style="background:#aaaaaa;">
+	<div class="col-md-12 col-xs-12 noPadding">
+		<input 
+		type="text"
+		placeholder="名稱"
+		style="width:100px;"
+		class="form-control inlineBlock"
+		 />
+		<button 
+		ng-click="add()"
+		class="btn btn-dark">新增圖層集合</button>		
+	</div>
+	<div 
+	class="col-md-12 col-xs-12 noPadding "
+	ng-repeat="item in list"
+	>
+		<div class="image_level_item ">
+			{{item.id}}:{{item.name}}
+			<img 
+			style="width:100%;"
+			ng-src="/image/{{item.id}}.jpeg"/>
+			<button
+			class="btn btn-dark"
+
+			>上傳JSON檔案
+				<file format="'json'" callback="upload" arg="item"></file>
+			</button>
+			
+		</div>
+	</div>
+	
+
+
+</div>

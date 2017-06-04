@@ -147,13 +147,10 @@ MergeImage.prototype.move=function(e){
 	
 	this.callback && this.callback(this.whxys)
 
-	clearTimeout(this.timer)
-	this.timer=setTimeout(function(e,whxy){
-		this.draw();
-	}.bind(this,e,whxy),5);
+	this.draw();
 	if(whxy.source.type=="font"){
 		if(!(whxy.w==whxy.source.src.w && whxy.h==whxy.source.src.h)){
-			delete whxy.source.canvas
+			delete this.level_canvas[this.select.i]
 		}
 	}
 }

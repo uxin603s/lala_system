@@ -1,6 +1,6 @@
 MergeImage.prototype.start=function(e){	
 	
-	this.resize();
+	// this.resize();
 	if(e.type=="mousedown"){
 		this.p.x=e.pageX;
 		this.p.y=e.pageY;		

@@ -1,0 +1,17 @@
+<div class="col-xs-12 noPadding">
+	<input 
+		placeholder="請輸入字型名稱"
+		type="text" 
+
+		class="inlineBlock form-control"
+		style="width:auto;"
+		ng-model="insert.name" 
+	/>
+	<button	
+	ng-click="add(insert)"
+	class="btn btn-sm btn-default"
+	>新增字型</button>
+</div>
+<div class="col-xs-12 noPadding" ng-repeat="item in list">
+{{item}}
+</div>

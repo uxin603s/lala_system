@@ -4,16 +4,9 @@
 	<title>lala system</title>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, minimum-scale=1.0, maximum-scale=1.0">
+	<script src="js/localforage.min.js" ></script>
 	<script src="js/angular.min.js" ></script>
 	<script src="js/Canvas.js" ></script>
-	
-	
-	<style>
-	@font-face {
-		font-family:'王漢宗特明體繁';
-		src: url("王漢宗特明體繁.ttf");
-	}
-	</style>
 	<script src="js/MergeImage/MergeImage.js" ></script>
 	<script src="js/MergeImage/listen.js" ></script>
 	<script src="js/MergeImage/start.js" ></script>
@@ -35,13 +28,24 @@
 	<link rel="stylesheet" type="text/css" href="angularjs-color-picker/angularjs-color-picker.min.css" />
 
 	<script src="/app/app.js" ></script>	
+	<script src="/app/modules/param/param.js" ></script>	
+	<script src="/app/modules/cache/cache.js" ></script>	
 	<script src="/app/components/index/index.js" ></script>	
+	<script src="/app/components/font/font.js" ></script>	
 	<script src="/app/components/file/file.js" ></script>	
+	<script src="/app/components/imageLevel/imageLevel.js" ></script>	
+	<script src="/app/components/imageLevel/imageLevelEdit.js" ></script>	
+	
 	<link rel="stylesheet" type="text/css" href="bootstrap-3.3.7/css/bootstrap.min.css" />
 
 	
 
 	<style>
+	body{
+		overflow-y: scroll;
+		background:#000000;
+		color:#ffffff;
+	}
 	.noPadding{
 		padding:0!important;
 	}
@@ -60,13 +64,20 @@
 	select.form-control{
 		width:auto;
 	}
+	color-picker{
+		background:#ffffff;
+	}
+	@font-face {
+		font-family: 'ABC';
+		src:url(http://lala.cfd888.info/fonts/1.woff) format("truetype");
+	}
+	
 	</style>
 </head>
 <body 
 ng-app="app"
-style="overflow-y: scroll;background:#000000;"
 class="container noPadding"
 >
-	<index></index>	
+	<index ng-if="!cache.not_finish_flag" ></index>
 </body>
 </html>
